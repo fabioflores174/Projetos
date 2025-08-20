@@ -2,7 +2,7 @@
 
 # Neste código e feito um Banco de dados com as informações de toda a turma.
 
-# Instalação do Firebase Admin SDK (se necessário)
+# Instalação do Firebase Admin SDK (se necessário).
 !pip install firebase-admin
 
 import firebase_admin
