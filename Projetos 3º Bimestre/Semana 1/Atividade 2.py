@@ -3,7 +3,7 @@
 import random
 import time
 # Configurações iniciais
-#Temos as variáveis para a contagem da vida e recursos que temos.
+#Temos as variáveis para a contagem da vida e recursos que temos
 estacas_disponiveis = 2
 lenhador = 4
 minerador = 10
