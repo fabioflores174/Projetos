@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arsenal de Vorgram</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+            color: #f1f1f1;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            padding: 0;
+        }
+        
+        /* Cabeçalho */
+        .full-width-background {
+            width: 100%;
+            height: 70vh;
+            min-height: 500px;
+            background-color: #1a1a1a;
+            background-image: url('fundo_header.png');
+            background-size: cover;
+            background-position: center bottom;
+            position: relative;
+            border-bottom: 4px solid #664400;
+        }
+        
+        .header-container {
+            position: absolute;
+            bottom: 100px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+            background: transparent;
+        }
+        
+        .header-container img {
+            max-width: 300px;
+            width: 100%;
+            image-rendering: pixelated;
+            border: 4px solid #996600;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+            background: rgba(26, 26, 26, 0.7);
+            padding: 10px;
+        }
+        
+        h1 {
+            color: #ffcc00;
+            font-size: 2.8rem;
+            text-shadow: 
+                3px 3px 0 #996600,
+                6px 6px 0 #664400;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 0 #664400;
+        }
+        
+        /* Container principal */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 3;
+        }
+        
+        /* Seções */
+        .section-title {
+            color: #ffcc00;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 0 #664400;
+            margin: 40px 0 20px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #ffcc00, transparent);
+        }
+        
+        /* Itens */
+        .item-container {
+            display: flex;
+            background: rgba(51, 51, 51, 0.8);
+            border: 4px solid #996600;
+            margin: 25px 0;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 8px 0 #664400;
+            flex-wrap: wrap;
+        }
+        
+        /* Emoji de naipe no canto superior direito */
+        .item-suit {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 2rem;
+            z-index: 2;
+            text-shadow: 2px 2px 0 #000;
+        }
+        
+        .item-image-container {
+            display: flex;
+            flex-direction: column;
+            margin-right: 20px;
+            width: 150px;
+        }
+        
+        .item-image {
+            width: 150px;
+            height: 150px;
+            background-color: #333;
+            border: 3px solid #996600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .item-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .item-status {
+            width: 100%;
+            background: rgba(153, 102, 0, 0.9);
+            padding: 5px;
+            text-align: center;
+            font-size: 0.9rem;
+            border: 2px solid #664400;
+            border-top: none;
+            margin-bottom: 10px;
+        }
+        
+        .item-details {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .item-name {
+            color: #ffcc00;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            border-bottom: 2px dotted #996600;
+            padding-bottom: 5px;
+        }
+        
+        .item-property {
+            margin: 8px 0;
+            display: flex;
+        }
+        
+        .property-name {
+            font-weight: bold;
+            color: #ffcc00;
+            min-width: 180px;
+        }
+        
+        .property-value {
+            color: #f1f1f1;
+        }
+        
+        /* Botões no estilo do código base */
+        .toggle-description {
+            background-color: #332200;
+            color: #f1f1f1;
+            border: 4px solid #996600;
+            padding: 8px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            box-shadow: 0 6px 0 #664400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        
+        .toggle-description:hover {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #664400;
+            background-color: #553300;
+        }
+        
+        .toggle-description:active {
+            transform: translateY(6px);
+            box-shadow: none;
+        }
+        
+        .description-content {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(26, 26, 26, 0.7);
+            border: 3px solid #996600;
+            position: relative;
+            box-shadow: 0 6px 0 #664400;
+        }
+        
+        .description-content::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            width: 40px;
+            height: 10px;
+            background: #996600;
+        }
+        
+        .description-content::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            right: 20px;
+            width: 40px;
+            height: 10px;
+            background: #996600;
+        }
+        
+        /* Botão de navegação */
+        .nav-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #332200;
+            color: #ffcc00;
+            border: 4px solid #996600;
+            padding: 12px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 6px 0 #664400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 1000;
+            text-decoration: none;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #664400;
+            background-color: #553300;
+        }
+        
+        .nav-button:active {
+            transform: translateY(6px);
+            box-shadow: none;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .item-container {
+                flex-direction: column;
+            }
+            
+            .item-image-container {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .item-image {
+                width: 100%;
+                height: 200px;
+            }
+            
+            .header-container img {
+                max-width: 200px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .item-suit {
+                font-size: 1.8rem;
+                top: 8px;
+                right: 8px;
+            }
+            
+            .nav-button {
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .item-name {
+                font-size: 1.4rem;
+            }
+            
+            .property-name {
+                min-width: 120px;
+            }
+            
+            .toggle-description {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .item-suit {
+                font-size: 1.5rem;
+                top: 5px;
+                right: 5px;
+            }
+            
+            .nav-button {
+                top: 5px;
+                right: 5px;
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Botão de navegação para Tabelas -->
+    <a href="tabelasv2.html" class="nav-button">Ver Tabelas</a>
+    
+    <!-- Cabeçalho -->
+    <div class="full-width-background">
+        <div class="header-container">
+            <img alt="Vorgram, o ciclope" src="vorgram.png" />
+            <h1>ARSENAL DE VORGRAM</h1>
+            <p class="subtitle">"Itens coletados em incontáveis aventuras"</p>
+        </div>
+    </div>
+    
+    <!-- Conteúdo principal -->
+    <div class="container">
+        <h2 class="section-title">Itens Especiais</h2>
+        
+        <!-- Escudo de Ossos (Espadas) -->
+        <div class="item-container">
+            <div class="item-suit">♠</div>
+            <div class="item-image-container">
+                <div class="item-image">
+                    <img alt="Escudo de Ossos" src="escudo_ossos.png" />
+                </div>
+                <div class="item-status">Dano: 0 | Vida: 2</div>
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Escudo de Ossos</h3>
+                <div class="item-property">
+                    <span class="property-name">Tipo:</span>
+                    <span class="property-value">Equipamento/Defesa</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Requerimentos:</span>
+                    <span class="property-value">Cavaleiro nível 1</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Quem achou:</span>
+                    <span class="property-value">Vorgram</span>
+                </div>
+                <button class="toggle-description">Mostrar Descrição</button>
+                <div class="description-content">
+                    Um escudo velho e empoeirado que já foi usado para parar criaturas místicas, ele possui uma habilidade que pode ser usada duas vezes em cada batalha, onde ao ser ativada, quaisquer danos tomados serão reduzidos a metade por duas rodadas.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cajado de madeira Rúnica (Paus) -->
+        <div class="item-container">
+            <div class="item-suit">♣</div>
+            <div class="item-image-container">
+                <div class="item-image">
+                    <img src="cajado_runico.png" alt="Cajado de madeira Rúnica">
+                </div>
+                <div class="item-status">Dano: 1 | Vida: 0</div>
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Cajado de madeira Rúnica</h3>
+                <div class="item-property">
+                    <span class="property-name">Tipo:</span>
+                    <span class="property-value">Arma/Mágica</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Requerimentos:</span>
+                    <span class="property-value">Mago nível 1</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Quem achou:</span>
+                    <span class="property-value">Vorgram</span>
+                </div>
+                <button class="toggle-description">Mostrar Descrição</button>
+                <div class="description-content">
+                    Esse cajado pode armazenar um feitiço de mago, após usar a magia, ele será guardado para a próxima batalha, dessa forma, uma magia pode be usada somente uma vez na batalha, mas poderá ser usada quantas vezes o usuário quiser.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Manto da Sombras (Paus) -->
+        <div class="item-container">
+            <div class="item-suit">♣ 🃏</div>
+            <div class="item-image-container">
+                <div class="item-image">
+                    <img src="manto_sombras.png" alt="Manto da Sombras">
+                </div>
+                <div class="item-status">Dano: - | Vida: -</div>
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Manto da Sombras</h3>
+                <div class="item-property">
+                    <span class="property-name">Tipo:</span>
+                    <span class="property-value">Armadura/Defesa</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Requerimentos:</span>
+                    <span class="property-value">Cavaleiro nível 1, Mago nível 1</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Quem achou:</span>
+                    <span class="property-value">Vorgram</span>
+                </div>
+                <button class="toggle-description">Mostrar Descrição</button>
+                <div class="description-content">
+                    Um capuz que parece se mover como água, mesmo sendo feito de sombras. O usuário além de ter uma alta defesa, também ganha a habilidade de paralisar um inimigo por dois turnos com suas sombras.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Martelo Estranho (Coringa) -->
+        <div class="item-container">
+            <div class="item-suit">♥ 🃏</div>
+            <div class="item-image-container">
+                <div class="item-image">
+                    <img src="martelo_estranho.png" alt="Martelo Estranho">
+                </div>
+                <div class="item-status">Dano: 3 - 1 | Vida: 0</div>
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Martelo Estranho</h3>
+                <div class="item-property">
+                    <span class="property-name">Tipo:</span>
+                    <span class="property-value">Arma/???</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Requerimentos:</span>
+                    <span class="property-value">Artificer nível 1</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Quem achou:</span>
+                    <span class="property-value">Vorgram</span>
+                </div>
+                <button class="toggle-description">Mostrar Descrição</button>
+                <div class="description-content">
+                    Um martelo que Vorgram diz ter achado em um campo logo a frente de um estranho portal, ele pode acertar nos números 1(A), 3, 5, 7 nas espadas (♠). Causando 3 de dano a uma criatura e 1 de dano a outra (caso não haja mais de uma criatura, o martelo irá causar 4 de dano). Tem uma sigla marcada no martelo… T. F.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Poção da riqueza (Ouros) -->
+        <div class="item-container">
+            <div class="item-suit">♦</div>
+            <div class="item-image-container">
+                <div class="item-image">
+                    <img src="pocao_riqueza.png" alt="Poção da riqueza">
+                </div>
+                <div class="item-status">Dano: 0 | Vida: 0</div>
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Poção da riqueza</h3>
+                <div class="item-property">
+                    <span class="property-name">Tipo:</span>
+                    <span class="property-value">Consumível/Dinheiro</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Requerimentos:</span>
+                    <span class="property-value">Mercador nível 1</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Quem achou:</span>
+                    <span class="property-value">Vorgram</span>
+                </div>
+                <button class="toggle-description">Mostrar Descrição</button>
+                <div class="description-content">
+                    Uma poção muito interessante que pode ajudar aqueles pouco afortunados, ao beber, quaisquer inimigos mortos na próxima batalha do consumidor, irão dar o equivalente a uma moeda.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Espada Cortante (Espadas) -->
+        <div class="item-container">
+            <div class="item-suit">♠</div>
+            <div class="item-image-container">
+                <div class="item-image">
+                    <img src="espada_cortante.png" alt="Espada Cortante">
+                </div>
+                <div class="item-status">Dano: 2 - 2 Turno | Vida: 0</div>
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Espada Cortante</h3>
+                <div class="item-property">
+                    <span class="property-name">Tipo:</span>
+                    <span class="property-value">Arma/Sangramento</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Requerimentos:</span>
+                    <span class="property-value">Cavaleiro nível 2</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Quem achou:</span>
+                    <span class="property-value">Vorgram</span>
+                </div>
+                <button class="toggle-description">Mostrar Descrição</button>
+                <div class="description-content">
+                    Existe uma lenda que essa espada já pertenceu ao príncipe-Eleitor da Baviera Maximiliano II, essa espada pode cortar fácil os inimigos causando 2 de dano e os fazer sangrar, causando 2 de dano por turno no inimigo atingido (não considerando o turno no qual o inimigo foi acertado), elá acerta nos números 3, 5, 7, 9 em espadas (♠).
+                </div>
+            </div>
+        </div>
+        
+        <!-- Aljava de Flechas Venenosas (Copas) -->
+        <div class="item-container">
+            <div class="item-suit">♥</div>
+            <div class="item-image-container">
+                <div class="item-image">
+                    <img src="aljava_flechas.png" alt="Aljava de Flechas Venenosas">
+                </div>
+                <div class="item-status">Dano: 1 Turno | Vida: 0</div>
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Aljava de Flechas Venenosas</h3>
+                <div class="item-property">
+                    <span class="property-name">Tipo:</span>
+                    <span class="property-value">Equipamento/Flecha</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Requerimentos:</span>
+                    <span class="property-value">Artificer nível 1, Cavaleiro nível 1</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Quem achou:</span>
+                    <span class="property-value">Vorgram</span>
+                </div>
+                <button class="toggle-description">Mostrar Descrição</button>
+                <div class="description-content">
+                    Uma aljava com 4 flechas banhadas em veneno em sua ponta que não aumentam o dano de armas que usam flechas (já que as flechas por si só são normais) porém podem aumentar a quantidade de usos um arco ou besta tem, além de seu veneno causar 1 de dano por turno no inimigo atingido (não considerando o turno no qual o inimigo foi acertado).
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Itens Simples</h2>
+        
+        <!-- Espada de Latão (Espadas) -->
+        <div class="item-container">
+            <div class="item-suit">♠</div>
+            <div class="item-image-container">
+                <div class="item-image">
+                    <img src="espada_latao.png" alt="Espada de Latão">
+                </div>
+                <div class="item-status">Dano: 1 | Vida: 0</div>
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Espada de Latão</h3>
+                <div class="item-property">
+                    <span class="property-name">Tipo:</span>
+                    <span class="property-value">Arma/Simples</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Requerimentos:</span>
+                    <span class="property-value">Nenhum</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Quem achou:</span>
+                    <span class="property-value">Vorgram</span>
+                </div>
+                <button class="toggle-description">Mostrar Descrição</button>
+                <div class="description-content">
+                    Uma espada feita de latão, é bem simples mas pode ser bem usada, acerta nos números 1(A), 2 e 3 nas espadas (♠).
+                </div>
+            </div>
+        </div>
+        
+        <!-- Arco simples (Copas) -->
+        <div class="item-container">
+            <div class="item-suit">♥</div>
+            <div class="item-image-container">
+                <div class="item-image">
+                    <img src="arco_simples.png" alt="Arco simples">
+                </div>
+                <div class="item-status">Dano: 2 | Vida: 0</div>
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Arco simples</h3>
+                <div class="item-property">
+                    <span class="property-name">Tipo:</span>
+                    <span class="property-value">Arma/Simples</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Requerimentos:</span>
+                    <span class="property-value">Nenhum</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Quem achou:</span>
+                    <span class="property-value">Vorgram</span>
+                </div>
+                <button class="toggle-description">Mostrar Descrição</button>
+                <div class="description-content">
+                    Um arco feito de madeira simples, dá pra se ver um galho para fora no arco, possui duas flechas (pode ser usado duas vezes por batalha) porém causa um bom dano. O arco acerta no 2, 4, 6 em copas (♥).
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chapéu de Mago Iniciante (Paus) -->
+        <div class="item-container">
+            <div class="item-suit">♣</div>
+            <div class="item-image-container">
+                <div class="item-image">
+                    <img src="chapeu_mago.png" alt="Chapéu de Mago Iniciante">
+                </div>
+                <div class="item-status">Dano: 1 | Vida: 2</div>
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Chapéu de Mago Iniciante</h3>
+                <div class="item-property">
+                    <span class="property-name">Tipo:</span>
+                    <span class="property-value">Armadura/Simples</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Requerimentos:</span>
+                    <span class="property-value">Mago nível 1</span>
+                </div>
+                <div class="item-property">
+                    <span class="property-name">Quem achou:</span>
+                    <span class="property-value">Vorgram</span>
+                </div>
+                <button class="toggle-description">Mostrar Descrição</button>
+                <div class="description-content">
+                    Um chapéu simples que pode aumentar o poder de magias centrais (magias que causam dano a somente um oponente) por 1.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButtons = document.querySelectorAll('.toggle-description');
+            
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const description = this.nextElementSibling;
+                    if (description.style.display === 'block') {
+                        description.style.display = 'none';
+                        this.textContent = 'Mostrar Descrição';
+                    } else {
+                        description.style.display = 'block';
+                        this.textContent = 'Ocultar Descrição';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
