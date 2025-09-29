@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vale do Espantalho - Entrada da Cidade</title>
+    <style>
+        :root {
+            --main-bg: #2e4f2e; /* Verde escuro (Floresta) */
+            --gradient-bg: linear-gradient(135deg, #2e4f2e, #4a7043);
+            --border-color: #8b5a2b; /* Marrom */
+            --shadow-color: #5c4033;
+            --text-color: #f5f5f5; /* Off-white */
+            --accent-color: #ffcc00; /* Amarelo dourado */
+            --secondary-bg: rgba(46, 79, 46, 0.8); /* Verde escuro com opacidade */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: var(--gradient-bg);
+            color: var(--text-color);
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Menu de navegação e cores */
+        .nav-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .nav-menu, .color-menu {
+            position: relative;
+        }
+        
+        .nav-button, .color-button {
+            background-color: var(--main-bg);
+            color: var(--accent-color);
+            border: 4px solid var(--border-color);
+            padding: 12px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 6px 0 var(--shadow-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+        
+        .nav-button:hover, .color-button:hover {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 var(--shadow-color);
+            background-color: var(--shadow-color);
+        }
+        
+        .nav-button:active, .color-button:active {
+            transform: translateY(6px);
+            box-shadow: none;
+        }
+        
+        .nav-dropdown, .color-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--secondary-bg);
+            border: 4px solid var(--border-color);
+            box-shadow: 0 6px 0 var(--shadow-color);
+            min-width: 200px;
+        }
+        
+        .nav-dropdown a, .color-dropdown button {
+            display: block;
+            color: var(--text-color);
+            padding: 10px 15px;
+            text-decoration: none;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            text-transform: uppercase;
+            transition: background-color 0.2s;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+        
+        .nav-dropdown a:hover, .color-dropdown button:hover {
+            background-color: var(--shadow-color);
+        }
+        
+        .nav-menu:hover .nav-dropdown, .color-menu:hover .color-dropdown {
+            display: block;
+        }
+
+        /* Cabeçalho */
+        .header {
+            background: var(--secondary-bg);
+            border-bottom: 4px solid var(--border-color);
+            box-shadow: 0 6px 0 var(--shadow-color);
+            padding: 20px 0;
+            position: relative;
+            z-index: 999;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-image {
+            width: 80px;
+            height: 80px;
+            background: #333;
+            border: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            image-rendering: pixelated;
+        }
+
+        .logo-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            text-align: left;
+        }
+
+        .logo-text h1 {
+            color: var(--accent-color);
+            font-size: 2.5rem;
+            text-shadow: 3px 3px 0 var(--shadow-color);
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .logo-text .subtitle {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            text-shadow: 2px 2px 0 var(--shadow-color);
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .header-nav-item {
+            background-color: var(--main-bg);
+            color: var(--text-color);
+            border: 3px solid var(--border-color);
+            padding: 8px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 0 var(--shadow-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+
+        .header-nav-item:hover {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 var(--shadow-color);
+            background-color: var(--shadow-color);
+        }
+
+        .header-nav-item:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* Container principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            flex: 1;
+        }
+
+        /* Seção de boas-vindas */
+        .welcome-section {
+            background: var(--secondary-bg);
+            border: 4px solid var(--border-color);
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 0 var(--shadow-color);
+            text-align: center;
+            position: relative;
+        }
+
+        .welcome-title {
+            color: var(--accent-color);
+            font-size: 3rem;
+            text-shadow: 3px 3px 0 var(--shadow-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .welcome-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+
+        /* Relógio mágico */
+        .magic-clock {
+            background: var(--main-bg);
+            border: 4px solid var(--border-color);
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 8px 0 var(--shadow-color);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .magic-clock::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 204, 0, 0.1) 0%, transparent 70%);
+            animation: magicGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes magicGlow {
+            0% { transform: scale(0.8) rotate(0deg); opacity: 0.5; }
+            100% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+        }
+
+        .clock-title {
+            color: var(--accent-color);
+            font-size: 2rem;
+            text-shadow: 2px 2px 0 var(--shadow-color);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 2;
+        }
+
+        .clock-subtitle {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .countdown-item {
+            background: rgba(26, 26, 26, 0.8);
+            border: 3px solid var(--accent-color);
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 4px 0 var(--shadow-color);
+            min-width: 80px;
+        }
+
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-shadow: 2px 2px 0 var(--shadow-color);
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        /* Seção de conteúdo principal */
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin: 40px 0;
+        }
+
+        .content-section {
+            background: var(--secondary-bg);
+            border: 4px solid var(--border-color);
+            padding: 30px;
+            box-shadow: 0 8px 0 var(--shadow-color);
+        }
+
+        .content-title {
+            color: var(--accent-color);
+            font-size: 2rem;
+            text-shadow: 2px 2px 0 var(--shadow-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .content-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        /* Seção de imagem da cidade */
+        .city-image-section {
+            background: var(--secondary-bg);
+            border: 4px solid var(--border-color);
+            padding: 20px;
+            box-shadow: 0 8px 0 var(--shadow-color);
+            text-align: center;
+        }
+
+        .city-image {
+            width: 100%;
+            height: 300px;
+            background: #333;
+            border: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .city-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        .image-caption {
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* História da Cidade */
+        .history-section {
+            background: var(--secondary-bg);
+            border: 4px solid var(--border-color);
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 8px 0 var(--shadow-color);
+        }
+
+        .history-icon {
+            color: var(--accent-color);
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        /* Serviços ao Cidadão */
+        .services-section {
+            background: var(--secondary-bg);
+            border: 4px solid var(--border-color);
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 8px 0 var(--shadow-color);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .service-card {
+            background: var(--main-bg);
+            border: 3px solid var(--border-color);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 6px 0 var(--shadow-color);
+            transition: transform 0.2s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.5rem;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .service-title {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .service-description {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Eventos */
+        .events-section {
+            background: var(--secondary-bg);
+            border: 4px solid var(--border-color);
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 8px 0 var(--shadow-color);
+        }
+
+        .event-item {
+            background: var(--main-bg);
+            border: 3px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 4px 0 var(--shadow-color);
+        }
+
+        .event-date {
+            background: var(--accent-color);
+            color: #000;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            min-width: 80px;
+            font-weight: bold;
+        }
+
+        .event-date .day {
+            font-size: 2rem;
+            display: block;
+        }
+
+        .event-date .month {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .event-content {
+            flex: 1;
+        }
+
+        .event-title {
+            color: var(--accent-color);
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .event-description {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .event-details {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+        }
+
+        /* Contato */
+        .contact-section {
+            background: var(--secondary-bg);
+            border: 4px solid var(--border-color);
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 8px 0 var(--shadow-color);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--main-bg);
+            border: 2px solid var(--border-color);
+            box-shadow: 0 3px 0 var(--shadow-color);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            color: var(--accent-color);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-input, .form-textarea {
+            background: var(--main-bg);
+            border: 3px solid var(--border-color);
+            padding: 12px;
+            color: var(--text-color);
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            box-shadow: 0 3px 0 var(--shadow-color);
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .form-button {
+            background: var(--accent-color);
+            color: #000;
+            border: 3px solid var(--border-color);
+            padding: 15px 25px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 6px 0 var(--shadow-color);
+        }
+
+        .form-button:hover {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 var(--shadow-color);
+        }
+
+        .form-button:active {
+            transform: translateY(6px);
+            box-shadow: none;
+        }
+
+        /* Brasão oficial */
+        .coat-of-arms {
+            background: var(--secondary-bg);
+            border: 4px solid var(--border-color);
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 8px 0 var(--shadow-color);
+            text-align: center;
+        }
+
+        .coat-of-arms-image {
+            width: 200px;
+            height: 200px;
+            background: #333;
+            border: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            image-rendering: pixelated;
+        }
+
+        .coat-of-arms-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* Rodapé */
+        .footer {
+            background: var(--main-bg);
+            border-top: 4px solid var(--border-color);
+            padding: 30px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-text {
+            color: var(--text-color);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: var(--text-color);
+        }
+
+        /* Notificações */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: #000;
+            padding: 15px 20px;
+            border: 3px solid var(--border-color);
+            box-shadow: 0 4px 0 var(--shadow-color);
+            z-index: 1001;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            max-width: 300px;
+            word-wrap: break-word;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: #2ed573;
+            color: #fff;
+        }
+
+        .notification.error {
+            background: #ff4757;
+            color: #fff;
+        }
+
+        .notification.warning {
+            background: #ffa502;
+            color: #fff;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--secondary-bg);
+            border: 4px solid var(--border-color);
+            box-shadow: 0 8px 0 var(--shadow-color);
+            padding: 40px;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            margin: 20px;
+            position: relative;
+        }
+
+        .modal-header {
+            color: var(--accent-color);
+            font-size: 2rem;
+            text-shadow: 2px 2px 0 var(--shadow-color);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: var(--accent-color);
+            color: #000;
+            border: 3px solid var(--border-color);
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 0 var(--shadow-color);
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 var(--shadow-color);
+        }
+
+        .modal-section {
+            margin-bottom: 25px;
+        }
+
+        .modal-subtitle {
+            color: var(--accent-color);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .mapa-lista {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .mapa-lista li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .mapa-lista li:before {
+            content: "⚡";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        .mapa-lista a {
+            color: var(--text-color);
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .mapa-lista a:hover {
+            color: var(--accent-color);
+        }
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .logo-text h1 {
+                font-size: 2rem;
+            }
+
+            .welcome-title {
+                font-size: 2.2rem;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .countdown {
+                gap: 10px;
+            }
+
+            .countdown-item {
+                padding: 10px 15px;
+                min-width: 60px;
+            }
+
+            .countdown-number {
+                font-size: 2rem;
+            }
+
+            .nav-container {
+                top: 10px;
+                right: 10px;
+            }
+
+            .nav-button, .color-button {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+
+            .notification {
+                max-width: 250px;
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .event-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-text h1 {
+                font-size: 1.6rem;
+            }
+
+            .welcome-title {
+                font-size: 1.8rem;
+            }
+
+            .content-title {
+                font-size: 1.6rem;
+            }
+
+            .clock-title {
+                font-size: 1.6rem;
+            }
+
+            .countdown-number {
+                font-size: 1.5rem;
+            }
+
+            .header-nav {
+                gap: 8px;
+            }
+
+            .header-nav-item {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .notification {
+                max-width: 200px;
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu de navegação e cores -->
+    <div class="nav-container">
+        <div class="nav-menu">
+            <button class="nav-button">Navegar</button>
+            <div class="nav-dropdown">
+                <a href="tabelas.html">Tabelas</a>
+                <a href="arena.html">Arena</a>
+                <a href="forja.html">Forja de Adornos</a>
+                <a href="Vorgram_itens.html">Itens</a>
+            </div>
+        </div>
+        <div class="color-menu">
+            <button class="color-button">Cores</button>
+            <div class="color-dropdown">
+                <button onclick="changeTheme('forest')">Floresta</button>
+                <button onclick="changeTheme('autumn')">Outono</button>
+                <button onclick="changeTheme('twilight')">Crepúsculo</button>
+                <button onclick="changeTheme('night')">Noite</button>
+                <button onclick="changeTheme('beige')">Bege</button>
+                <button onclick="changeTheme('oak')">Carvalho</button>
+                <button onclick="changeTheme('sand')">Areia</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cabeçalho -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-image">
+                    <img src="logo_vale.png" alt="Logo do Vale do Espantalho">
+                </div>
+                <div class="logo-text">
+                    <h1>Vale do Espantalho</h1>
+                    <div class="subtitle">Portal Oficial da Cidade</div>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="#historia" class="header-nav-item">História da Cidade</a>
+                <a href="#servicos" class="header-nav-item">Serviços ao Cidadão</a>
+                <a href="#eventos" class="header-nav-item">Eventos</a>
+                <a href="#contato" class="header-nav-item">Contato</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <div class="container">
+        <!-- Seção de boas-vindas -->
+        <section class="welcome-section">
+            <h2 class="welcome-title">Bem-vindos ao Vale do Espantalho</h2>
+            <p class="welcome-description">
+                Bem-vindos ao portal oficial do Vale do Espantalho, uma comunidade renascida das cinzas graças aos corajosos aventureiros que emergiram do portal mágico! O que antes era uma vila devastada e quase abandonada, agora floresce como uma próspera comunidade prestes à elevação para cidade oficial. Unidos pela adversidade e fortalecidos pela esperança, construímos juntos um futuro brilhante onde aventureiros, comerciantes e famílias encontram seu lar em harmonia com a magia que permeia nossa terra.
+            </p>
+        </section>
+
+        <!-- Relógio mágico -->
+        <section class="magic-clock">
+            <h3 class="clock-title">⏰ Relógio Mágico ⏰</h3>
+            <p class="clock-subtitle">Contagem regressiva para a Grande Inauguração</p>
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Dias</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Horas</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutos</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Segundos</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conteúdo principal -->
+        <div class="main-content">
+            <div class="content-section">
+                <h3 class="content-title">Sobre Nossa Cidade</h3>
+                <p class="content-text">
+                    O Vale do Espantalho se transformou de um simples acampamento rural numa cidade próspera cheia de vida espiritual e coletividade. Nossa terra fértil produz os melhores colheitas da região, enquanto nossos aventureiros exploram as profundezas das proximidades em busca de tesouros e conhecimento. A magia flui através das nossas terras, e nossa presença histórica florece como um lugar quente de negócios para aventureiros e comerciantes.
+                </p>
+                <br>
+                <p class="content-text">
+                    Nossos cidadãos possuem história de agricultura avançada, artesanato especializado, e técnicas constroem suas vidas na harmonia com a natureza abundante. Nossas casas são construídas com pedra e madeira locais, e nossos jardins prosperam com colheitas abundantes. O comércio com o resto da região nos trouxe uma economia próspera, e nossa grande biblioteca é reconhecida como centro de conhecimento mundial.
+                </p>
+            </div>
+            
+            <div class="city-image-section">
+                <div class="city-image">
+                    <img src="vista_cidade.png" alt="Vista da Cidade">
+                </div>
+                <p class="image-caption">Vista Panorâmica da Cidade</p>
+            </div>
+        </div>
+
+        <!-- História da Cidade -->
+        <section id="historia" class="history-section">
+            <h3 class="content-title"><span class="history-icon">📚</span> História da Cidade</h3>
+            <p class="content-text">
+                O Vale do Espantalho tem uma história de renascimento extraordinária. Tudo começou quando um grupo de 25 corajosos aventureiros emergiu de um portal mágico e descobriu uma vila devastada e quase deserta. Casas com portas entreabertas, ruas vazias e um silêncio perturbador dominavam o local.
+            </p>
+            <br>
+            <p class="content-text">
+                Apenas duas almas resistiram ao abandono: um ferreiro determinado que se recusou a deixar sua forja, e seu fiel amigo mineiro que não quis partir sem ele. O terror que esvaziou a vila foi causado por um espantalho que, alimentado pela energia do portal mágico, ganhou vida e aterrorizou os habitantes por semanas inteiras.
+            </p>
+            <br>
+            <p class="content-text">
+                Após derrotar o espantalho maligno e restaurar a prosperidade agrícola, nossa comunidade enfrentou outros desafios: uma invasão goblin foi repelida com bravura, e estabelecemos relações diplomáticas com a poderosa cidade de Gargântua, provando nosso valor como parceiros comerciais. Agora, com nossa transformação em cidade oficial, buscamos expandir nossas alianças com outros reinos e estabelecer o Vale do Espantalho como um centro próspero de comércio e aventura.
+            </p>
+        </section>
+
+        <!-- Serviços ao Cidadão -->
+        <section id="servicos" class="services-section">
+            <h3 class="content-title">🏛️ Serviços ao Cidadão</h3>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">📋</div>
+                    <h4 class="service-title">Registro Civil</h4>
+                    <p class="service-description">
+                        Certidões de nascimento, casamento e óbito. Registros de propriedade e documentação oficial.
+                    </p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🛡️</div>
+                    <h4 class="service-title">Guarda Municipal</h4>
+                    <p class="service-description">
+                        Segurança pública, patrulhamento e proteção contra ameaças sobrenaturais.
+                    </p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔨</div>
+                    <h4 class="service-title">Obras Públicas</h4>
+                    <p class="service-description">
+                        Manutenção de estradas, iluminação mágica e infraestrutura urbana.
+                    </p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📦</div>
+                    <h4 class="service-title">Licenças Comerciais</h4>
+                    <p class="service-description">
+                        Autorização para estabelecimentos comerciais, feiras e atividades mágicas.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Eventos da Cidade -->
+        <section id="eventos" class="events-section">
+            <h3 class="content-title">📅 Eventos da Cidade</h3>
+            
+            <div class="event-item">
+                <div class="event-date">
+                    <span class="day">15</span>
+                    <span class="month">Set</span>
+                </div>
+                <div class="event-content">
+                    <h4 class="event-title">Festival do Renascimento</h4>
+                    <p class="event-description">
+                        Celebração anual em homenagem aos aventureiros do portal e à vitória sobre o espantalho maligno.
+                    </p>
+                    <span class="event-details">Local: Praça Central • Horário: 08h às 20h</span>
+                </div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-date">
+                    <span class="day">03</span>
+                    <span class="month">Out</span>
+                </div>
+                <div class="event-content">
+                    <h4 class="event-title">Feira de Comércio com Gargântua</h4>
+                    <p class="event-description">
+                        Encontro comercial mensal com mercadores de Gargântua para trocas e fortalecimento de alianças.
+                    </p>
+                    <span class="event-details">Local: Mercado Municipal • Horário: 06h às 18h</span>
+                </div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-date">
+                    <span class="day">20</span>
+                    <span class="month">Out</span>
+                </div>
+                <div class="event-content">
+                    <h4 class="event-title">Homenagem aos Defensores</h4>
+                    <p class="event-description">
+                        Cerimônia em honra aos heróis que defenderam o vale da invasão goblin e outros perigos.
+                    </p>
+                    <span class="event-details">Local: Monumento dos Heróis • Horário: 14h às 18h</span>
+                </div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-date">
+                    <span class="day">10</span>
+                    <span class="month">Nov</span>
+                </div>
+                <div class="event-content">
+                    <h4 class="event-title">Dia da Grande Transformação</h4>
+                    <p class="event-description">
+                        Celebração da elevação oficial do Vale do Espantalho de vila para cidade reconhecida.
+                    </p>
+                    <span class="event-details">Local: Toda a Cidade • Horário: 09h às 22h</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Entre em Contato -->
+        <section id="contato" class="contact-section">
+            <h3 class="content-title">📞 Entre em Contato</h3>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">🏛️</div>
+                        <div>
+                            <strong>Prefeitura da Cidade</strong><br>
+                            Praça do Espantalho, nº 1<br>
+                            Vale do Espantalho - Reino Antigo
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">📬</div>
+                        <div>
+                            <strong>Correio de Funcionamento</strong><br>
+                            Segunda a Sexta: 8h às 17h<br>
+                            Sábados: 9h às 13h
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">🔮</div>
+                        <div>
+                            <strong>Cristal de Comunicação</strong><br>
+                            Frequência Mágica 108.5<br>
+                            Para emergências - Frequência 911
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">✉️</div>
+                        <div>
+                            <strong>Correio Eletrônico</strong><br>
+                            contato@valedoespantalho.reino<br>
+                            prefeito@valedoespantalho.reino
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h4 style="color: var(--accent-color); margin-bottom: 20px; text-transform: uppercase;">Envie sua Mensagem</h4>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="nome">Nome Completo:</label>
+                        <input type="text" id="nome" class="form-input" placeholder="Digite seu nome">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Cristal de Contato:</label>
+                        <input type="email" id="email" class="form-input" placeholder="seuemail@reino.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="assunto">Assunto:</label>
+                        <select id="assunto" class="form-input">
+                            <option value="">Selecione um assunto</option>
+                            <option value="servicos">Serviços ao Cidadão</option>
+                            <option value="eventos">Eventos da Cidade</option>
+                            <option value="reclamacao">Reclamação</option>
+                            <option value="sugestao">Sugestão</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="mensagem">Mensagem e Comentário:</label>
+                        <textarea id="mensagem" class="form-textarea" rows="5" placeholder="Digite sua mensagem aqui..."></textarea>
+                    </div>
+
+                    <button type="button" class="form-button" onclick="enviarMensagem()">Enviar Mensagem</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brasão oficial -->
+        <section class="coat-of-arms">
+            <h3 class="content-title">Brasão Oficial</h3>
+            <div class="coat-of-arms-image">
+                <img src="brasao_oficial.png" alt="Brasão Oficial do Vale do Espantalho">
+            </div>
+            <p class="content-text">
+                O brasão oficial do Vale do Espantalho simboliza nossa jornada de renascimento e superação. O espantalho central representa tanto nossa origem - o terror que devastou a vila - quanto nossa transformação em símbolo de proteção e prosperidade. As espigas de trigo celebram a restauração da agricultura após a vitória. O portal mágico ao fundo honra os 25 heróis que emergiram para salvar nossa comunidade, enquanto as ferramentas de forja prestam tributo ao ferreiro e ao mineiro, os únicos que permaneceram fiéis ao vale quando todos partiram.
+            </p>
+        </section>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-text">© 2025 Vale do Espantalho - Todos os direitos reservados</p>
+            <div class="footer-links">
+                <a href="#politica" class="footer-link" onclick="showPoliticaPrivacidade(event)">Política de Privacidade</a>
+                <a href="#termos" class="footer-link" onclick="showTermosUso(event)">Termos de Uso</a>
+                <a href="#acessibilidade" class="footer-link" onclick="showAcessibilidade(event)">Acessibilidade</a>
+                <a href="#mapa" class="footer-link" onclick="showMapaSite(event)">Mapa do Site</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== SISTEMA DE NOTIFICAÇÕES =====
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => notification.classList.add('show'), 100);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // ===== SISTEMA DE TEMAS =====
+        const themes = {
+            forest: {
+                '--main-bg': '#2e4f2e',
+                '--gradient-bg': 'linear-gradient(135deg, #2e4f2e, #4a7043)',
+                '--border-color': '#8b5a2b',
+                '--shadow-color': '#5c4033',
+                '--text-color': '#f5f5f5',
+                '--accent-color': '#ffcc00',
+                '--secondary-bg': 'rgba(46, 79, 46, 0.8)'
+            },
+            autumn: {
+                '--main-bg': '#8b4513',
+                '--gradient-bg': 'linear-gradient(135deg, #8b4513, #a0522d)',
+                '--border-color': '#654321',
+                '--shadow-color': '#3e2723',
+                '--text-color': '#fff8dc',
+                '--accent-color': '#ffa500',
+                '--secondary-bg': 'rgba(139, 69, 19, 0.8)'
+            },
+            twilight: {
+                '--main-bg': '#4b3c5e',
+                '--gradient-bg': 'linear-gradient(135deg, #4b3c5e, #6a5b7b)',
+                '--border-color': '#6b8299',
+                '--shadow-color': '#4a5c72',
+                '--text-color': '#f5f5f5',
+                '--accent-color': '#ffcc00',
+                '--secondary-bg': 'rgba(75, 60, 94, 0.8)'
+            },
+            night: {
+                '--main-bg': '#2e2e4f',
+                '--gradient-bg': 'linear-gradient(135deg, #2e2e4f, #434370)',
+                '--border-color': '#4a4a72',
+                '--shadow-color': '#1a1a33',
+                '--text-color': '#e6e6fa',
+                '--accent-color': '#9370db',
+                '--secondary-bg': 'rgba(46, 46, 79, 0.8)'
+            },
+            beige: {
+                '--main-bg': '#f5f5dc',
+                '--gradient-bg': 'linear-gradient(135deg, #f5f5dc, #e8d5b9)',
+                '--border-color': '#4a3728',
+                '--shadow-color': '#3c2f24',
+                '--text-color': '#333333',
+                '--accent-color': '#d4a017',
+                '--secondary-bg': 'rgba(245, 245, 220, 0.8)'
+            },
+            oak: {
+                '--main-bg': '#3c2415',
+                '--gradient-bg': 'linear-gradient(135deg, #3c2415, #4a2e1a)',
+                '--border-color': '#8b7355',
+                '--shadow-color': '#2a1a0f',
+                '--text-color': '#f5f5dc',
+                '--accent-color': '#daa520',
+                '--secondary-bg': 'rgba(60, 36, 21, 0.9)'
+            },
+            sand: {
+                '--main-bg': '#f4e4bc',
+                '--gradient-bg': 'linear-gradient(135deg, #f4e4bc, #d9c2a6)',
+                '--border-color': '#6b4e31',
+                '--shadow-color': '#5a3f27',
+                '--text-color': '#333333',
+                '--accent-color': '#e6b800',
+                '--secondary-bg': 'rgba(244, 228, 188, 0.8)'
+            }
+        };
+
+        function changeTheme(themeName) {
+            const theme = themes[themeName];
+            for (const [key, value] of Object.entries(theme)) {
+                document.documentElement.style.setProperty(key, value);
+            }
+            localStorage.setItem('selectedTheme', themeName);
+            showNotification(`Tema alterado para ${themeName.charAt(0).toUpperCase() + themeName.slice(1)}`, 'success');
+        }
+
+        // ===== RELÓGIO DE CONTAGEM REGRESSIVA =====
+        function updateCountdown() {
+            const targetDate = new Date('2025-08-27T00:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                document.getElementById('countdown').innerHTML = '<div class="countdown-item"><span class="countdown-number">🎉</span><span class="countdown-label">Inaugurado!</span></div>';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerHTML = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerHTML = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerHTML = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerHTML = seconds.toString().padStart(2, '0');
+        }
+
+        // ===== FUNÇÃO DE ENVIO DE MENSAGEM =====
+        function enviarMensagem() {
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const assunto = document.getElementById('assunto').value;
+            const mensagem = document.getElementById('mensagem').value;
+
+            if (!nome || !email || !mensagem) {
+                showNotification('Por favor, preencha todos os campos obrigatórios!', 'error');
+                return;
+            }
+
+            // Simular envio da mensagem
+            showNotification('Mensagem enviada com sucesso! Responderemos em breve.', 'success');
+            
+            // Limpar formulário
+            document.getElementById('nome').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('assunto').value = '';
+            document.getElementById('mensagem').value = '';
+        }
+
+        // ===== FUNÇÕES DOS LINKS DO RODAPÉ =====
+        function showPoliticaPrivacidade(e) {
+            e.preventDefault();
+            showModal('Política de Privacidade', `
+                <div class="modal-section">
+                    <p class="modal-text">A Prefeitura do Vale do Espantalho valoriza e respeita a privacidade de todos os cidadãos e visitantes de nosso portal oficial.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Coleta de Informações</h4>
+                    <p class="modal-text">Coletamos apenas as informações necessárias para fornecer nossos serviços municipais, como nome, endereço de cristal de comunicação e natureza da solicitação quando você entra em contato conosco.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Uso das Informações</h4>
+                    <p class="modal-text">As informações coletadas são utilizadas exclusivamente para responder às suas solicitações, fornecer serviços municipais e melhorar nossos atendimentos aos cidadãos.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Proteção Mágica de Dados</h4>
+                    <p class="modal-text">Utilizamos encantamentos de proteção avançados para manter suas informações seguras contra acessos não autorizados, inclusive proteções contra magias de leitura mental e cristais espiões.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Compartilhamento</h4>
+                    <p class="modal-text">Não compartilhamos suas informações pessoais com terceiros, exceto quando exigido por leis do reino ou para cumprir obrigações legais municipais.</p>
+                </div>
+            `);
+        }
+
+        function showTermosUso(e) {
+            e.preventDefault();
+            showModal('Termos de Uso', `
+                <div class="modal-section">
+                    <p class="modal-text">Ao utilizar o portal oficial do Vale do Espantalho, você concorda com os seguintes termos e condições:</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Uso Responsável</h4>
+                    <p class="modal-text">Este portal destina-se ao uso legítimo de serviços municipais. É proibido o uso de magias de hackeamento, encantamentos de alteração de dados ou qualquer forma de interferência nos sistemas mágicos da cidade.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Conteúdo do Site</h4>
+                    <p class="modal-text">Todas as informações, textos, imagens e elementos mágicos deste site são propriedade da Prefeitura do Vale do Espantalho e estão protegidos pelas leis de propriedade intelectual do reino.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Responsabilidades do Usuário</h4>
+                    <p class="modal-text">Os usuários são responsáveis pela veracidade das informações fornecidas e devem utilizar os serviços de forma ética e conforme as leis municipais e do reino.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Limitação de Responsabilidade</h4>
+                    <p class="modal-text">A prefeitura não se responsabiliza por danos causados por interferências mágicas externas, ataques de criaturas sobrenaturais aos sistemas ou eventos de força maior que afetem o funcionamento do portal.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Modificações</h4>
+                    <p class="modal-text">Estes termos podem ser atualizados conforme necessário, e os usuários serão notificados por meio de anúncios mágicos na praça central da cidade.</p>
+                </div>
+            `);
+        }
+
+        function showAcessibilidade(e) {
+            e.preventDefault();
+            showModal('Acessibilidade', `
+                <div class="modal-section">
+                    <p class="modal-text">O Vale do Espantalho está comprometido em tornar nosso portal acessível a todos os cidadãos, incluindo aqueles com necessidades especiais mágicas e não-mágicas.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Recursos de Acessibilidade</h4>
+                    <p class="modal-text">• <strong>Leitura Mágica:</strong> Compatível com cristais de leitura para deficientes visuais<br>
+                    • <strong>Navegação por Telepatia:</strong> Suporte para usuários com limitações motoras<br>
+                    • <strong>Tradução Automática:</strong> Disponível em élfico, anão e outras línguas do reino<br>
+                    • <strong>Ajuste de Contraste:</strong> Temas adaptativos para diferentes sensibilidades visuais</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Funcionalidades Especiais</h4>
+                    <p class="modal-text">Nosso portal possui encantamentos que permitem navegação por comandos de voz mágicos, ampliação de texto através de magias de zoom e descrições audio-mágicas de todas as imagens.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Suporte Adicional</h4>
+                    <p class="modal-text">Caso precise de assistência especial para acessar nossos serviços, entre em contato conosco através dos cristais de comunicação ou visite pessoalmente a Prefeitura Central.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Compromisso Contínuo</h4>
+                    <p class="modal-text">Trabalhamos constantemente para melhorar a acessibilidade de nossos serviços digitais e físicos, sempre ouvindo as sugestões de nossos cidadãos.</p>
+                </div>
+            `);
+        }
+
+        function showMapaSite(e) {
+            e.preventDefault();
+            showModal('Mapa do Site', `
+                <div class="modal-section">
+                    <p class="modal-text">Navegue facilmente por todas as seções do portal oficial do Vale do Espantalho:</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Páginas Principais</h4>
+                    <ul class="mapa-lista">
+                        <li><a href="#" onclick="closeModal(); document.querySelector('.welcome-section').scrollIntoView({behavior: 'smooth'})">Página Inicial</a></li>
+                        <li><a href="#" onclick="closeModal(); document.querySelector('#historia').scrollIntoView({behavior: 'smooth'})">História da Cidade</a></li>
+                        <li><a href="#" onclick="closeModal(); document.querySelector('#servicos').scrollIntoView({behavior: 'smooth'})">Serviços ao Cidadão</a></li>
+                        <li><a href="#" onclick="closeModal(); document.querySelector('#eventos').scrollIntoView({behavior: 'smooth'})">Eventos da Cidade</a></li>
+                        <li><a href="#" onclick="closeModal(); document.querySelector('#contato').scrollIntoView({behavior: 'smooth'})">Entre em Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Outras Páginas do Ecossistema</h4>
+                    <ul class="mapa-lista">
+                        <li><a href="index.html">Tabelas de RPG</a></li>
+                        <li><a href="arena.html">Arena de Combate</a></li>
+                        <li><a href="forja.html">Forja de Adornos</a></li>
+                        <li><a href="Vorgram_itens.html">Catálogo de Itens</a></li>
+                    </ul>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Serviços Municipais</h4>
+                    <ul class="mapa-lista">
+                        <li>Registro Civil</li>
+                        <li>Guarda Municipal</li>
+                        <li>Obras Públicas</li>
+                        <li>Licenças Comerciais</li>
+                    </ul>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-subtitle">Informações</h4>
+                    <ul class="mapa-lista">
+                        <li><a href="#" onclick="showPoliticaPrivacidade(event)">Política de Privacidade</a></li>
+                        <li><a href="#" onclick="showTermosUso(event)">Termos de Uso</a></li>
+                        <li><a href="#" onclick="showAcessibilidade(event)">Acessibilidade</a></li>
+                    </ul>
+                </div>
+            `);
+        }
+
+        function showModal(title, content) {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                    <h3 class="modal-header">${title}</h3>
+                    ${content}
+                </div>
+            `;
+            document.body.appendChild(modal);
+            setTimeout(() => modal.classList.add('show'), 10);
+            
+            // Fechar modal clicando fora
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            // Fechar modal com ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        }
+
+        function closeModal() {
+            const modal = document.querySelector('.modal');
+            if (modal) {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    if (modal.parentNode) {
+                        modal.parentNode.removeChild(modal);
+                    }
+                }, 300);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('selectedTheme') || 'forest';
+            changeTheme(savedTheme);
+            
+            // Inicializar contagem regressiva
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            
+            // Mostrar notificação de boas-vindas
+            setTimeout(() => {
+                showNotification('Bem-vindos ao Vale do Espantalho!', 'success');
+            }, 1000);
+        });
+
+        // Navegação suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

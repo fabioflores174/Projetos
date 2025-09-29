@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Arena de Vorgran</title>
   <style>
+    :root {
+      --main-bg: #2e4f2e;
+      --gradient-bg: linear-gradient(135deg, #2e4f2e, #4a7043);
+      --border-color: #8b5a2b;
+      --shadow-color: #5c4033;
+      --text-color: #f5f5f5;
+      --accent-color: #ffcc00;
+      --secondary-bg: rgba(46, 79, 46, 0.8);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -12,59 +22,105 @@
     }
 
     body {
-      background: #1e0b0b;
-      color: #e0d6d6;
+      background: var(--gradient-bg);
+      color: var(--text-color);
       font-family: 'Courier New', monospace;
       line-height: 1.6;
       padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Classe para esconder elementos */
     .hidden {
       display: none;
     }
 
-    /* Botão de Menu */
-    .menu-toggle {
+    /* Menu de navegação e cores */
+    .nav-container {
       position: fixed;
-      top: 10px;
-      left: 10px;
-      background-color: #4a0000;
-      color: #e0e0e0;
-      border: 4px solid #8a2b2b;
-      padding: 8px 16px;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 1000;
+    }
+    
+    .nav-menu, .color-menu {
+      position: relative;
+    }
+    
+    .nav-button, .color-button {
+      background-color: var(--main-bg);
+      color: var(--accent-color);
+      border: 4px solid var(--border-color);
+      padding: 12px 20px;
       font-family: 'Courier New', monospace;
       font-size: 1rem;
       cursor: pointer;
       transition: all 0.2s;
-      box-shadow: 0 6px 0 #4b0000;
+      box-shadow: 0 6px 0 var(--shadow-color);
       text-transform: uppercase;
       letter-spacing: 1px;
-      z-index: 11;
+      text-decoration: none;
     }
-
-    .menu-toggle:hover {
+    
+    .nav-button:hover, .color-button:hover {
       transform: translateY(3px);
-      box-shadow: 0 3px 0 #4b0000;
-      background-color: #6a0000;
+      box-shadow: 0 3px 0 var(--shadow-color);
+      background-color: var(--shadow-color);
     }
-
-    .menu-toggle:active {
+    
+    .nav-button:active, .color-button:active {
       transform: translateY(6px);
       box-shadow: none;
     }
+    
+    .nav-dropdown, .color-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--secondary-bg);
+      border: 4px solid var(--border-color);
+      box-shadow: 0 6px 0 var(--shadow-color);
+      min-width: 200px;
+    }
+    
+    .nav-dropdown a, .color-dropdown button {
+      display: block;
+      color: var(--text-color);
+      padding: 10px 15px;
+      text-decoration: none;
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+      text-transform: uppercase;
+      transition: background-color 0.2s;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+    }
+    
+    .nav-dropdown a:hover, .color-dropdown button:hover {
+      background-color: var(--shadow-color);
+    }
+    
+    .nav-menu:hover .nav-dropdown, .color-menu:hover .color-dropdown {
+      display: block;
+    }
 
-    /* Botões de Expansão */
     .expand-button {
-      background-color: #4a0000;
-      color: #e0e0e0;
-      border: 4px solid #8a2b2b;
+      background-color: var(--main-bg);
+      color: var(--accent-color);
+      border: 4px solid var(--border-color);
       padding: 8px 16px;
       font-family: 'Courier New', monospace;
       font-size: 1rem;
       cursor: pointer;
       transition: all 0.2s;
-      box-shadow: 0 6px 0 #4b0000;
+      box-shadow: 0 6px 0 var(--shadow-color);
       text-transform: uppercase;
       letter-spacing: 1px;
       margin: 10px 0;
@@ -73,8 +129,8 @@
 
     .expand-button:hover {
       transform: translateY(3px);
-      box-shadow: 0 3px 0 #4b0000;
-      background-color: #6a0000;
+      box-shadow: 0 3px 0 var(--shadow-color);
+      background-color: var(--shadow-color);
     }
 
     .expand-button:active {
@@ -82,104 +138,67 @@
       box-shadow: none;
     }
 
-    /* Menu de Navegação */
-    .nav-bar {
-      background: rgba(30, 15, 15, 0.9);
-      border-bottom: 4px solid #8a2b2b;
-      box-shadow: 0 6px 0 #4b0000;
-      position: fixed;
-      width: 100%;
-      top: 50px;
-      z-index: 10;
-      padding: 10px 0;
-      text-align: center;
+    /* Cabeçalho */
+    .header {
+      background: var(--secondary-bg);
+      border-bottom: 4px solid var(--border-color);
+      box-shadow: 0 6px 0 var(--shadow-color);
+      padding: 20px 0;
+      position: relative;
+      z-index: 999;
     }
 
-    .nav-bar ul {
-      list-style: none;
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
       display: flex;
+      align-items: center;
       justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
       gap: 20px;
     }
 
-    .nav-bar a {
-      color: #ff9999;
-      text-decoration: none;
-      font-size: 1.2rem;
-      text-transform: uppercase;
-      text-shadow: 1px 1px 0 #4b0000;
-      padding: 8px 16px;
-      border: 2px solid #8a2b2b;
-      transition: all 0.2s;
-    }
-
-    .nav-bar a:hover {
-      background: #6a0000;
-      transform: translateY(2px);
-      box-shadow: 0 3px 0 #4b0000;
-    }
-
-    /* Cabeçalho */
-    .full-width-background {
-      width: 100%;
-      height: 40vh;
-      min-height: 300px;
-      background-color: #1e0b0b;
-      background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80');
-      background-size: cover;
-      background-position: center bottom;
-      position: relative;
-      border-bottom: 4px solid #8a2b2b;
-      margin-top: 90px; /* Espaço para o menu fixo e botão */
-    }
-
-    .header-container {
-      position: absolute;
-      bottom: 80px;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      z-index: 2;
-      background: transparent;
-    }
-
-    h1 {
-      color: #ff5050;
+    .logo-text h1 {
+      color: var(--accent-color);
       font-family: 'Georgia', serif;
-      font-size: 3rem;
-      text-shadow: 
-        3px 3px 0 #8a2b2b,
-        6px 6px 0 #4b0000;
+      font-size: 2.5rem;
+      text-shadow: 3px 3px 0 var(--shadow-color);
       letter-spacing: 2px;
-      margin-bottom: 8px;
+      margin-bottom: 5px;
       text-transform: uppercase;
     }
 
-    .subtitle {
-      color: #d4a017;
-      font-size: 1.4rem;
-      margin-bottom: 10px;
+    .logo-text .subtitle {
+      color: var(--text-color);
+      font-size: 1.2rem;
+      text-shadow: 2px 2px 0 var(--shadow-color);
+      text-align: center;
     }
 
-    /* Container principal */
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 20px;
-      position: relative;
-      z-index: 3;
+      padding: 40px 20px;
+      flex: 1;
     }
 
-    /* Seções */
     .section-title {
-      color: #ff5050;
+      color: var(--accent-color);
       font-family: 'Georgia', serif;
       font-size: 2.5rem;
-      text-shadow: 2px 2px 0 #4b0000;
+      text-shadow: 2px 2px 0 var(--shadow-color);
       margin: 30px 0 20px;
       text-align: center;
       position: relative;
       padding-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .section-title::after {
@@ -189,30 +208,29 @@
       left: 25%;
       width: 50%;
       height: 3px;
-      background: linear-gradient(to right, transparent, #d4a017, transparent);
+      background: linear-gradient(to right, transparent, var(--accent-color), transparent);
     }
 
-    /* Seção Sobre */
     .about-section {
-      background: rgba(50, 25, 25, 0.8);
-      border: 4px solid #8a2b2b;
-      box-shadow: 0 8px 0 #4b0000;
-      padding: 20px;
+      background: var(--secondary-bg);
+      border: 4px solid var(--border-color);
+      box-shadow: 0 8px 0 var(--shadow-color);
+      padding: 30px;
       margin-bottom: 30px;
     }
 
     .about-section p {
       font-size: 1.1rem;
-      color: #e0d6d6;
+      color: var(--text-color);
       margin-bottom: 15px;
+      line-height: 1.7;
     }
 
-    /* Seção de Lutas */
-    #fights-section {
-      background: rgba(50, 25, 25, 0.8);
-      border: 4px solid #8a2b2b;
-      box-shadow: 0 8px 0 #4b0000;
-      padding: 20px;
+    .fights-section {
+      background: var(--secondary-bg);
+      border: 4px solid var(--border-color);
+      box-shadow: 0 8px 0 var(--shadow-color);
+      padding: 30px;
       margin-bottom: 30px;
     }
 
@@ -227,265 +245,203 @@
     .bracket-table th,
     .bracket-table td {
       padding: 10px;
-      border: 2px solid #8a2b2b;
+      border: 2px solid var(--border-color);
       text-align: center;
-      color: #e0d6d6;
+      color: var(--text-color);
       font-size: 1rem;
     }
 
     .group-table th,
     .bracket-table th {
-      background: rgba(138, 43, 43, 0.9);
-      color: #ff9999;
+      background: var(--main-bg);
+      color: var(--accent-color);
       text-transform: uppercase;
-      text-shadow: 1px 1px 0 #4b0000;
+      text-shadow: 1px 1px 0 var(--shadow-color);
       font-size: 1.2rem;
     }
 
     .group-table tr:nth-child(even),
     .bracket-table tr:nth-child(even) {
-      background: rgba(30, 15, 15, 0.7);
+      background: rgba(0, 0, 0, 0.2);
     }
 
     .group-table tr:hover,
     .bracket-table tr:hover {
-      background: rgba(100, 50, 50, 0.5);
+      background: var(--main-bg);
     }
 
-    /* Estilização do Chaveamento */
-    .tournament-bracket {
+    .bracket {
       display: flex;
-      flex-direction: column;
-      margin-top: 30px;
-    }
-
-    .bracket-round {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 40px;
-    }
-
-    .round-title {
-      text-align: center;
-      color: #d4a017;
-      margin-bottom: 15px;
-      font-size: 1.4rem;
-      text-transform: uppercase;
-    }
-
-    .bracket-match {
-      width: 220px;
-      background: rgba(40, 20, 20, 0.8);
-      border: 3px solid #8a2b2b;
-      border-radius: 5px;
+      align-items: stretch;
+      overflow-x: auto;
       padding: 10px;
-      margin: 0 10px;
       position: relative;
     }
-
-    .bracket-team {
-      padding: 8px;
-      margin: 5px 0;
-      background: rgba(30, 15, 15, 0.7);
-      border: 1px solid #8a2b2b;
+    
+    .round {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      margin: 0 20px;
+      position: relative;
+    }
+    
+    .match {
+      background: var(--secondary-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px 0;
+      text-align: center;
+      min-width: 80px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .player {
+      background: var(--main-bg);
+      border: 1px solid var(--border-color);
       border-radius: 3px;
-      text-align: center;
-    }
-
-    .bracket-team.winner {
-      background: rgba(0, 80, 0, 0.3);
-      font-weight: bold;
-    }
-
-    .bracket-vs {
-      text-align: center;
-      color: #ff5050;
-      font-weight: bold;
-      margin: 5px 0;
       padding: 5px;
+      margin: 3px 0;
+      color: var(--text-color);
     }
 
-    .bracket-connector {
+    .section {
+      background: var(--secondary-bg);
+      border: 4px solid var(--border-color);
+      box-shadow: 0 8px 0 var(--shadow-color);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .section h2 {
+      color: var(--accent-color);
+      font-size: 2rem;
+      text-shadow: 2px 2px 0 var(--shadow-color);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .arrow {
       position: absolute;
-      background: #8a2b2b;
-    }
-
-    .bracket-connector.horizontal {
-      height: 2px;
-      width: 20px;
+      right: -25px;
       top: 50%;
-      right: -20px;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: var(--accent-color);
     }
 
-    .bracket-connector.vertical {
-      width: 2px;
-      height: 40px;
-      top: 100%;
-      left: 50%;
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--accent-color);
+      color: #000;
+      padding: 15px 20px;
+      border: 3px solid var(--border-color);
+      box-shadow: 0 4px 0 var(--shadow-color);
+      z-index: 1001;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.3s ease;
+      max-width: 300px;
+      word-wrap: break-word;
     }
 
-    .bracket-match.final {
-      border: 3px solid #d4a017;
-      background: rgba(80, 60, 0, 0.3);
+    .notification.show {
+      opacity: 1;
+      transform: translateX(0);
     }
 
-    .bracket-match.final .bracket-team {
-      background: rgba(50, 30, 10, 0.7);
+    .notification.success {
+      background: #2ed573;
+      color: #fff;
     }
 
-    /* Layout responsivo para o chaveamento */
     @media (max-width: 768px) {
-      .bracket-round {
+      .header-content {
         flex-direction: column;
-        align-items: center;
-      }
-      
-      .bracket-match {
-        margin: 10px 0;
-        width: 90%;
-      }
-      
-      .bracket-connector.horizontal {
-        display: none;
-      }
-      
-      .bracket-connector.vertical {
-        height: 20px;
-        top: 100%;
-      }
-    }
-
-    /* Responsividade */
-    @media (max-width: 768px) {
-      .full-width-background {
-        height: 35vh;
-        min-height: 250px;
-        margin-top: 80px;
+        gap: 20px;
+        text-align: center;
       }
 
-      .header-container {
-        bottom: 60px;
-      }
-
-      h1 {
-        font-size: 2.2rem;
-      }
-
-      .subtitle {
-        font-size: 1.2rem;
-      }
-
-      .nav-bar {
-        top: 40px;
-      }
-
-      .nav-bar ul {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .nav-bar a {
-        font-size: 1rem;
-        padding: 6px 12px;
-      }
-
-      .menu-toggle {
-        padding: 6px 12px;
-        font-size: 0.9rem;
-      }
-
-      .expand-button {
-        padding: 6px 12px;
-        font-size: 0.9rem;
+      .logo-text h1 {
+        font-size: 2rem;
       }
 
       .section-title {
         font-size: 2rem;
       }
 
-      .group-table th,
-      .group-table td,
-      .bracket-table th,
-      .bracket-table td {
-        padding: 6px;
+      .nav-container {
+        top: 10px;
+        right: 10px;
+      }
+
+      .nav-button, .color-button {
+        padding: 8px 12px;
         font-size: 0.9rem;
+      }
+
+      .bracket {
+        overflow-x: scroll;
       }
     }
 
     @media (max-width: 480px) {
-      .full-width-background {
-        height: 30vh;
-        min-height: 200px;
-        margin-top: 70px;
-      }
-
-      .header-container {
-        bottom: 50px;
-      }
-
-      h1 {
-        font-size: 1.8rem;
-      }
-
-      .subtitle {
-        font-size: 1rem;
-      }
-
-      .nav-bar {
-        top: 35px;
-      }
-
-      .nav-bar a {
-        font-size: 0.9rem;
-        padding: 5px 10px;
-      }
-
-      .menu-toggle {
-        padding: 5px 10px;
-        font-size: 0.8rem;
-      }
-
-      .expand-button {
-        padding: 5px 10px;
-        font-size: 0.8rem;
+      .logo-text h1 {
+        font-size: 1.6rem;
       }
 
       .section-title {
         font-size: 1.6rem;
       }
-
-      .group-table th,
-      .group-table td,
-      .bracket-table th,
-      .bracket-table td {
-        padding: 4px;
-        font-size: 0.8rem;
-      }
     }
   </style>
 </head>
 <body>
-  <!-- Botão de Menu -->
-  <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
-
-  <!-- Menu de Navegação -->
-  <nav class="nav-bar hidden">
-    <ul>
-      <li><a href="#sobre">Sobre</a></li>
-      <li><a href="#moradores">Moradores</a></li>
-      <li><a href="#locais">Locais da Vila</a></li>
-      <li><a href="#lutas">Lutas</a></li>
-      <li><a href="#jornal">Jornal da Cidade</a></li>
-    </ul>
-  </nav>
-
-  <!-- Cabeçalho -->
-  <div class="full-width-background">
-    <div class="header-container">
-      <h1>A Arena de Vorgran</h1>
-      <p class="subtitle">Vale do Espantalho</p>
+  <!-- Menu de navegação e cores -->
+  <div class="nav-container">
+    <div class="nav-menu">
+      <button class="nav-button">Navegar</button>
+      <div class="nav-dropdown">
+        <a href="homepage.html">Página Inicial</a>
+        <a href="tabelas.html">Tabelas</a>
+        <a href="forja.html">Forja de Adornos</a>
+        <a href="Vorgram_itens.html">Itens</a>
+      </div>
+    </div>
+    <div class="color-menu">
+      <button class="color-button">Cores</button>
+      <div class="color-dropdown">
+        <button onclick="changeTheme('forest')">Floresta</button>
+        <button onclick="changeTheme('autumn')">Outono</button>
+        <button onclick="changeTheme('twilight')">Crepúsculo</button>
+        <button onclick="changeTheme('night')">Noite</button>
+        <button onclick="changeTheme('beige')">Bege</button>
+        <button onclick="changeTheme('oak')">Carvalho</button>
+        <button onclick="changeTheme('sand')">Areia</button>
+      </div>
     </div>
   </div>
+
+  <!-- Cabeçalho -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo-text">
+          <h1>A Arena de Vorgran</h1>
+          <div class="subtitle">Vale do Espantalho</div>
+        </div>
+      </div>
+    </div>
+  </header>
 
   <!-- Conteúdo Principal -->
   <div class="container">
@@ -558,88 +514,193 @@
             <tr><td>Raika O.</td></tr>
           </table>
         </div>
-        
-        <!-- Chaveamento Visual -->
-        <h3 class="section-title" style="font-size: 1.8rem; margin-top: 40px;">Chaveamento do Torneio</h3>
-        <div class="tournament-bracket">
-          
-          <!-- Quartas de Final -->
-          <div class="round-title">Quartas de Final</div>
-          <div class="bracket-round">
-            <div class="bracket-match">
-              <div class="bracket-team winner">Brócolis</div>
-              <div class="bracket-vs">VS</div>
-              <div class="bracket-team">Jilós</div>
-              <div class="bracket-connector horizontal"></div>
-            </div>
-            
-            <div class="bracket-match">
-              <div class="bracket-team">Rabanete</div>
-              <div class="bracket-vs">VS</div>
-              <div class="bracket-team winner">Espinafre</div>
-              <div class="bracket-connector horizontal"></div>
-            </div>
-            
-            <div class="bracket-match">
-              <div class="bracket-team winner">Batata</div>
-              <div class="bracket-vs">VS</div>
-              <div class="bracket-team">Wasabi</div>
-              <div class="bracket-connector horizontal"></div>
-            </div>
-          </div>
-          
-          <!-- Semi Final -->
-          <div class="round-title">Semi Final</div>
-          <div class="bracket-round">
-            <div class="bracket-match">
-              <div class="bracket-connector vertical" style="top: -40px; transform: rotate(180deg);"></div>
-              <div class="bracket-team winner">Brócolis</div>
-              <div class="bracket-vs">VS</div>
-              <div class="bracket-team">Espinafre</div>
-              <div class="bracket-connector horizontal"></div>
-            </div>
-            
-            <div class="bracket-match">
-              <div class="bracket-connector vertical" style="top: -40px; transform: rotate(180deg);"></div>
-              <div class="bracket-team">Batata</div>
-              <div class="bracket-vs">VS</div>
-              <div class="bracket-team winner">Wasabi</div>
-              <div class="bracket-connector horizontal"></div>
-            </div>
-          </div>
-          
-          <!-- Final -->
-          <div class="round-title">Final</div>
-          <div class="bracket-round">
-            <div class="bracket-match final">
-              <div class="bracket-connector vertical" style="top: -40px; transform: rotate(180deg);"></div>
-              <div class="bracket-team">Brócolis</div>
-              <div class="bracket-vs">VS</div>
-              <div class="bracket-team winner">Wasabi</div>
-            </div>
-          </div>
-        </div>
-        
-        <p style="text-align: center; color: #d4a017; margin-top: 20px;">
-          O time Wasabi venceu o torneio! Parabéns a todos os participantes.
-        </p>
       </div>
     </section>
+
+    <!-- CHAVEAMENTO DOS VENCEDORES -->
+    <div class="section">
+      <h2>Chaveamento dos Vencedores</h2>
+      <div class="bracket">
+        <!-- Rodada 1 -->
+        <div class="round">
+          <div class="match"><div class="player">1</div><div class="player">2</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">3</div><div class="player">4</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">5</div><div class="player">6</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">7</div><div class="player">8</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">9</div><div class="player">10</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">11</div><div class="player">12</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">13</div><div class="player">14</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">15</div><div class="player">16</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">17</div><div class="player">18</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">19</div><div class="player">20</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">21</div><div class="player">22</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">23</div><div class="player">24</div><span class="arrow">→</span></div>
+        </div>
+
+        <!-- Rodada 2 -->
+        <div class="round">
+          <div class="match"><div class="player">1</div><div class="player">4</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">5</div><div class="player">8</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">10</div><div class="player">11</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">14</div><div class="player">15</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">17</div><div class="player">19</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">22</div><div class="player">24</div><span class="arrow">→</span></div>
+        </div>
+
+        <!-- Rodada 3: Quartas -->
+        <div class="round">
+          <div class="match"><div class="player">1</div><div class="player">5</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">10</div><div class="player">15</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">17</div><div class="player">24</div><span class="arrow">→</span></div>
+        </div>
+
+        <!-- Rodada 4: Semifinais -->
+        <div class="round">
+          <div class="match"><div class="player">7</div><div class="player">5</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">15</div><div class="player">24</div><span class="arrow">→</span></div>
+        </div>
+
+        <!-- Final -->
+        <div class="round">
+          <div class="match"><div class="player">5 (Campeão)</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAVEAMENTO DOS PERDEDORES -->
+    <div class="section">
+      <h2>Chaveamento dos Perdedores</h2>
+      <div class="bracket">
+        <div class="round">
+          <div class="match"><div class="player">2</div><div class="player">3</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">6</div><div class="player">7</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">9</div><div class="player">12</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">13</div><div class="player">16</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">18</div><div class="player">20</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">21</div><div class="player">23</div><span class="arrow">→</span></div>
+        </div>
+
+        <div class="round">
+          <div class="match"><div class="player">3</div><div class="player">6</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">9</div><div class="player">16</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">18</div><div class="player">23</div><span class="arrow">→</span></div>
+        </div>
+
+        <div class="round">
+          <div class="match"><div class="player">3</div><div class="player">9</div><span class="arrow">→</span></div>
+          <div class="match"><div class="player">16</div><div class="player">23</div><span class="arrow">→</span></div>
+        </div>
+
+        <div class="round">
+          <div class="match"><div class="player">3</div><div class="player">23</div><span class="arrow">→</span></div>
+        </div>
+
+        <div class="round">
+          <div class="match"><div class="player">23 (Vencedor)</div></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    // Função para alternar o menu
-    function toggleMenu() {
-      const navBar = document.querySelector('.nav-bar');
-      navBar.classList.toggle('hidden');
+    // ===== SISTEMA DE NOTIFICAÇÕES =====
+    function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+
+      setTimeout(() => notification.classList.add('show'), 100);
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 3000);
     }
 
-    // Função para alternar as seções (fase de grupos e fase individual)
+    // ===== SISTEMA DE TEMAS =====
+    const themes = {
+      forest: {
+        '--main-bg': '#2e4f2e',
+        '--gradient-bg': 'linear-gradient(135deg, #2e4f2e, #4a7043)',
+        '--border-color': '#8b5a2b',
+        '--shadow-color': '#5c4033',
+        '--text-color': '#f5f5f5',
+        '--accent-color': '#ffcc00',
+        '--secondary-bg': 'rgba(46, 79, 46, 0.8)'
+      },
+      autumn: {
+        '--main-bg': '#8b4513',
+        '--gradient-bg': 'linear-gradient(135deg, #8b4513, #a0522d)',
+        '--border-color': '#654321',
+        '--shadow-color': '#3e2723',
+        '--text-color': '#fff8dc',
+        '--accent-color': '#ffa500',
+        '--secondary-bg': 'rgba(139, 69, 19, 0.8)'
+      },
+      twilight: {
+        '--main-bg': '#4b3c5e',
+        '--gradient-bg': 'linear-gradient(135deg, #4b3c5e, #6a5b7b)',
+        '--border-color': '#6b8299',
+        '--shadow-color': '#4a5c72',
+        '--text-color': '#f5f5f5',
+        '--accent-color': '#ffcc00',
+        '--secondary-bg': 'rgba(75, 60, 94, 0.8)'
+      },
+      night: {
+        '--main-bg': '#2e2e4f',
+        '--gradient-bg': 'linear-gradient(135deg, #2e2e4f, #434370)',
+        '--border-color': '#4a4a72',
+        '--shadow-color': '#1a1a33',
+        '--text-color': '#e6e6fa',
+        '--accent-color': '#9370db',
+        '--secondary-bg': 'rgba(46, 46, 79, 0.8)'
+      },
+      beige: {
+        '--main-bg': '#f5f5dc',
+        '--gradient-bg': 'linear-gradient(135deg, #f5f5dc, #e8d5b9)',
+        '--border-color': '#4a3728',
+        '--shadow-color': '#3c2f24',
+        '--text-color': '#333333',
+        '--accent-color': '#d4a017',
+        '--secondary-bg': 'rgba(245, 245, 220, 0.8)'
+      },
+      oak: {
+        '--main-bg': '#3c2415',
+        '--gradient-bg': 'linear-gradient(135deg, #3c2415, #4a2e1a)',
+        '--border-color': '#8b7355',
+        '--shadow-color': '#2a1a0f',
+        '--text-color': '#f5f5dc',
+        '--accent-color': '#daa520',
+        '--secondary-bg': 'rgba(60, 36, 21, 0.9)'
+      },
+      sand: {
+        '--main-bg': '#f4e4bc',
+        '--gradient-bg': 'linear-gradient(135deg, #f4e4bc, #d9c2a6)',
+        '--border-color': '#6b4e31',
+        '--shadow-color': '#5a3f27',
+        '--text-color': '#333333',
+        '--accent-color': '#e6b800',
+        '--secondary-bg': 'rgba(244, 228, 188, 0.8)'
+      }
+    };
+
+    function changeTheme(themeName) {
+      const theme = themes[themeName];
+      for (const [key, value] of Object.entries(theme)) {
+        document.documentElement.style.setProperty(key, value);
+      }
+      localStorage.setItem('selectedTheme', themeName);
+      showNotification(`Tema alterado para ${themeName.charAt(0).toUpperCase() + themeName.slice(1)}`, 'success');
+    }
+
     function toggleSection(sectionId, button) {
       const section = document.getElementById(sectionId);
       section.classList.toggle('hidden');
       
-      // Alterar o texto do botão
       if (section.classList.contains('hidden')) {
         button.textContent = button.textContent.replace('Ocultar', 'Mostrar');
       } else {
@@ -647,11 +708,13 @@
       }
     }
 
-    // Fechar o menu ao clicar em um link
-    document.querySelectorAll('.nav-bar a').forEach(link => {
-      link.addEventListener('click', () => {
-        document.querySelector('.nav-bar').classList.add('hidden');
-      });
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('selectedTheme') || 'forest';
+      changeTheme(savedTheme);
+      
+      setTimeout(() => {
+        showNotification('Bem-vindo à Arena de Vorgran!', 'success');
+      }, 1000);
     });
   </script>
 </body>
